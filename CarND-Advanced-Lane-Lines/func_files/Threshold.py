@@ -1,14 +1,12 @@
 import numpy as np
 import cv2
 
-
-
 def hls_s_layer(image):
     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
     H = hls[:, :, 0]
     L = hls[:, :, 1]
     S = hls[:, :, 2]
-    return S
+    return hls
 
 
 def abs_sobel_thresh(gray, orient='x', thresh_min=0, thresh_max=255):
@@ -61,27 +59,49 @@ def region_of_interest(img, vertices):
     return masked_image
 
 
-def getThresholdImage(image):
-    gray = hls_s_layer(image)
+def getThresholdImage(image, verbose=False):
+    hls = hls_s_layer(image)
+    H = hls[:, :, 0]
+    L = hls[:, :, 1]
+    S = hls[:, :, 2]
+    H_thresh = (10, 40)
+    H_binary = np.zeros_like(H)
+    H_binary[(H > H_thresh[0]) & (H <= H_thresh[1])] = 1
 
-    thresh = (80, 255)
+    S_thresh = (100, 255)
+    S_binary = np.zeros_like(S)
+    S_binary[(S > S_thresh[0]) & (S <= S_thresh[1])] = 1
+
+    L_thresh = (200, 255)
+    L_binary = np.zeros_like(L)
+    L_binary[(L > L_thresh[0]) & (L <= L_thresh[1])] = 1
+
+    thresh = (150, 255)
     R = image[:, :, 0]
     R_binary = np.zeros_like(R)
-    R_binary[(gray > thresh[0]) & (gray <= thresh[1])] = 1
+    R_binary[(R > thresh[0]) & (R <= thresh[1])] = 1
 
-    mag_binary = mag_thresh(gray, sobel_kernel=3, mag_thresh=(15, 150))
-    dir_binary = dir_threshold(gray, sobel_kernel=15, thresh=(0.3, 1.7))
-    combined = np.zeros_like(dir_binary)
-    gradx = abs_sobel_thresh(gray, orient='x', thresh_min=20, thresh_max=200)
-    grady = abs_sobel_thresh(gray, orient='y', thresh_min=10, thresh_max=200)
+    mag_binary = mag_thresh(S, sobel_kernel=3, mag_thresh=(50, 200))
+    dir_binary1 = dir_threshold(L_binary, sobel_kernel=3, thresh=(np.pi / 6, np.pi / 2))
+    dir_binary2 = dir_threshold(R_binary, sobel_kernel=3, thresh=(np.pi / 6, np.pi / 2))
+    dir_binary3 = dir_threshold(S_binary, sobel_kernel=3, thresh=(np.pi / 6, np.pi / 2))
+    dir_binary = (((dir_binary1 == 1) | ((dir_binary2 == 1) & (dir_binary3 == 1)))
+                  | ((dir_binary2 == 1) & ((dir_binary1 == 1) | (dir_binary3 == 1)))
+                  | ((dir_binary3 == 1) | ((dir_binary1 == 1) & (dir_binary2 == 1))))
 
-    combined[((grady == 1) & (mag_binary == 1) & (R_binary == 1)) | ((gradx == 1) & (dir_binary == 1))] = 1
+    combined = np.zeros_like(R)
 
+    gradx = abs_sobel_thresh(S, orient='x', thresh_min=10, thresh_max=100)
+    grady = abs_sobel_thresh(S_binary, orient='y', thresh_min=5, thresh_max=200)
+
+    #     combined[((gradx == 1) | ((mag_binary == 1) | (dir_binary == 1)) & (L_binary == 1)) | (SSeq_binary == 1)] = 1
+    combined[((mag_binary == 1) | (dir_binary == 1)) | ((R_binary == 1) & (S_binary == 1)) | (L_binary == 1)] = 1
+    #     combined[(gradx == 1)] = 1
     h, w = combined.shape
-    vertices = np.array([[(70, h),
-                          ((w - 70) / 2, (h + 120) / 2),
-                          ((w + 150) / 2, (h + 120) / 2),
-                          (w - 50, h)]],
+    vertices = np.array([[(250, h - 20),
+                          ((w - 120) / 2, (h + 160) / 2),
+                          ((w + 200) / 2, (h + 160) / 2),
+                          (w - 120, h - 20)]],
                         dtype=np.int32)
 
     v = vertices[0]
@@ -89,4 +109,5 @@ def getThresholdImage(image):
     y = [v[0][1], v[1][1], v[2][1], v[3][1]]
 
     masked_image = region_of_interest(combined, vertices)
+
     return masked_image

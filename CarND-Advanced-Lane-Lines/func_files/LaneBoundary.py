@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-
+from func_files.Smoothing import Line
 
 def plotHistogram(binary_warped):
     histogram = np.sum(binary_warped[binary_warped.shape[0] // 2:, :], axis=0)
@@ -117,7 +117,7 @@ def fit_poly(binary_warped, leftx=None, lefty=None, rightx=None, righty=None):
     return left_fit, right_fit, left_fitx, right_fitx, ploty
 
 
-def search_around_poly(binary_warped, left_fit=None, right_fit=None):
+def search_around_poly(binary_warped, best_left={}, best_right={}):
     # HYPERPARAMETER
     margin = 40
 
@@ -125,6 +125,9 @@ def search_around_poly(binary_warped, left_fit=None, right_fit=None):
     nonzero = binary_warped.nonzero()
     nonzeroy = np.array(nonzero[0])
     nonzerox = np.array(nonzero[1])
+
+    left_fit = best_left["best_fit"]
+    right_fit = best_right["best_fit"]
 
     if left_fit is None and right_fit is None:
         fit = fit_poly(binary_warped, None, None, None, None)
@@ -146,6 +149,24 @@ def search_around_poly(binary_warped, left_fit=None, right_fit=None):
 
     # Fit new polynomials
     left_fit, right_fit, left_fitx, right_fitx, ploty = fit_poly(binary_warped, leftx, lefty, rightx, righty)
+
+    left_line = Line(left_fit, left_fitx,
+                     recent_xfitted=best_left["recent_xfitted"], bestx=best_left["bestx"],
+                     best_fit=best_left["best_fit"])
+
+    recent_xfitted, best_fit, bestx = left_line.compareToBestFit(100.0)
+    best_left["recent_xfitted"] = recent_xfitted
+    best_left["best_fit"] = best_fit
+    best_left["bestx"] = bestx
+
+    right_line = Line(right_fit, right_fitx,
+                      recent_xfitted=best_right["recent_xfitted"], bestx=best_right["bestx"],
+                      best_fit=best_right["best_fit"])
+
+    recent_xfitted, best_fit, bestx = right_line.compareToBestFit(100.0)
+    best_right["recent_xfitted"] = recent_xfitted
+    best_right["best_fit"] = best_fit
+    best_right["bestx"] = bestx
 
     ## Visualization ##
     # Create an image to draw on and an image to show the selection window
@@ -171,4 +192,4 @@ def search_around_poly(binary_warped, left_fit=None, right_fit=None):
     cv2.fillPoly(window_img, np.int_([right_line_pts]), (0, 255, 0))
     result = cv2.addWeighted(out_img, 1, window_img, 0.3, 0)
 
-    return result, left_fit, right_fit, left_fitx, right_fitx
+    return result, best_left, best_right

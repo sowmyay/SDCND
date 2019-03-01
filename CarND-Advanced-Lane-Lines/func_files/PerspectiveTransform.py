@@ -1,13 +1,13 @@
 import cv2
 import numpy as np
 
-from func_files import Helper as H
+from func_files.Helper import detectLanes
 
 
 def perspectiveTransform(img, thresholded):
     # Vertices extracted manually for performing a perspective transform
 
-    lines = H.detectLanes(img)
+    lines = detectLanes(img)
     if len(lines) > 1:
         left_line = lines[0]
         right_line = lines[1]

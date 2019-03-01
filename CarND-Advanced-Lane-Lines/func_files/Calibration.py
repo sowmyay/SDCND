@@ -5,11 +5,9 @@ import cv2
 import glob
 import pickle
 
-#Calibration
-
 def calibrateCamera(verbose=True):
     # Array to store object and image points from all the images
-    images = glob.glob("../camera_cal/calibration*.jpg")
+    images = glob.glob("camera_cal/calibration*.jpg")
     objpoints = []
     imgpoints = []
     m = 9
@@ -38,7 +36,7 @@ def calibrateCamera(verbose=True):
                 plt.show()
 
     # Do camera calibration given object points and image points
-    img = cv2.imread('../camera_cal/calibration1.jpg')
+    img = cv2.imread('camera_cal/calibration1.jpg')
     img_size = (img.shape[1], img.shape[0])
 
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, img_size, None, None)

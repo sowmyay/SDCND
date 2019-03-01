@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import cv2
-import func_files.Threshold as T
+from func_files.Threshold import region_of_interest
 
 def grayscale(img):
     return cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
@@ -108,7 +108,7 @@ def detectLanes(img):
     v = vertices[0]
     x = [v[0][0], v[1][0], v[2][0], v[3][0]]
     y = [v[0][1], v[1][1], v[2][1], v[3][1]]
-    masked_edges = T.region_of_interest(canny_img, vertices=vertices)
+    masked_edges = region_of_interest(canny_img, vertices=vertices)
 
     rho = 1
     theta = np.pi / 180

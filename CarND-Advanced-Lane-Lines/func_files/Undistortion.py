@@ -1,7 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 
-def cal_undistort(img, mtx, dist, fname, nameRemove = 0, show=False, compareUndist=True):
+def cal_undistort(img, mtx, dist, fname, nameRemove = 0, verbose=False, compareUndist=True):
     h,  w = img.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(cameraMatrix = mtx,
                                                       distCoeffs = dist,imageSize = (w,h),
@@ -10,7 +10,7 @@ def cal_undistort(img, mtx, dist, fname, nameRemove = 0, show=False, compareUndi
     dst1 = cv2.undistort(img, mtx, dist, None, newcameramtx)
     x,y,w,h = roi
     dst1 = dst1[y:y+h, x:x+w]
-    if show:
+    if verbose:
         if compareUndist:
             f, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(20,10))
             ax3.imshow(dst)
