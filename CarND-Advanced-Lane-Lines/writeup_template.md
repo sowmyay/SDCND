@@ -185,8 +185,6 @@ Here's a [link to my video result](test_videos_output/project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
 The biggest challenge in this project was setting hyperparameters to obtain a thresholded image, that would work well for every scene, irrespective of the road condition and the lighting condtion.
 It would have been ideal if we could design a technique that can automatically choose the best suitable hyperparameters based on the scene.
 
