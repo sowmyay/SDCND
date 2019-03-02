@@ -27,8 +27,8 @@
         <entry file="file://$PROJECT_DIR$/writeup_template.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="270">
-                <caret line="166" column="47" lean-forward="false" selection-start-line="166" selection-start-column="47" selection-end-line="166" selection-end-column="47" />
+              <first_editor relative-caret-position="-1935">
+                <caret line="19" column="46" lean-forward="false" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -181,8 +181,8 @@
         <option value="$PROJECT_DIR$/func_files/PerspectiveTransform.py" />
         <option value="$PROJECT_DIR$/func_files/Threshold.py" />
         <option value="$PROJECT_DIR$/func_files/Calibration.py" />
-        <option value="$PROJECT_DIR$/writeup_template.md" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/writeup_template.md" />
       </list>
     </option>
   </component>
@@ -671,8 +671,8 @@
     <entry file="file://$PROJECT_DIR$/writeup_template.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="270">
-            <caret line="166" column="47" lean-forward="false" selection-start-line="166" selection-start-column="47" selection-end-line="166" selection-end-column="47" />
+          <first_editor relative-caret-position="-1935">
+            <caret line="19" column="46" lean-forward="false" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
             <folding />
           </first_editor>
           <second_editor />
