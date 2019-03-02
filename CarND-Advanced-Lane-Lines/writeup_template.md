@@ -17,13 +17,13 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: undist_cb_images/1.jpg "Undistorted"
+[image1]: output_images/undist_cb_images/1.jpg "Undistorted"
 [image2_1]: test_images/test6.jpg "Original image"
-[image2]: undist_images/test6.jpg "Road Transformed"
-[image3]: thresholded_images/test6.jpg "Binary Example"
-[image4]: warped_images/test6.jpg "Warp Example"
-[image4_1]: unwarped_images/test6.jpg "UnWarp Example"
-[image5]: fit_images/test6.jpg "Fit Visual"
+[image2]: output_images/undist_images/test6.jpg "Road Transformed"
+[image3]: output_images/thresholded_images/test6.jpg "Binary Example"
+[image4]: output_images/warped_images/test6.jpg "Warp Example"
+[image4_1]: output_images/unwarped_images/test6.jpg "UnWarp Example"
+[image5]: output_images/fit_images/test6.jpg "Fit Visual"
 [image6]: output_images/test6.jpg "Output"
 [video1]: test_videos_output/project_video.mp4 "Video"
 
